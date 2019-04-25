@@ -14,7 +14,7 @@ Resolves a git repository branch name to the corresponding commit sha.
 ## Deploy action
 
 ```bash
-wsk action create git-resolve-ref index.js
+wsk action create git-resolve-ref main.js
 ```
 
 ## Invoke action
@@ -30,7 +30,6 @@ wsk action invoke git-resolve-ref --param org "adobe" --param repo "helix-cli" -
 ```
 
 ## Development
-
 
 ### Build
 
