@@ -54,5 +54,5 @@ function main({ org, repo, branch = 'master' }) {
     });
   });
 }
-
+main({ org: 'adobe', repo: 'helix-cli' });
 exports.main = main;
