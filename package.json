@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "./node_modules/.bin/eslint ."
+    "lint": "nyc eslint ."
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,9 @@
     "eslint-plugin-header": "3.0.0",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-jsx-a11y": "6.1.1",
-    "eslint-plugin-react": "7.12.4"
+    "eslint-plugin-react": "7.12.4",
+    "mocha": "^6.1.4",
+    "mocha-parallel-tests": "^2.1.0",
+    "nyc": "^14.0.0"
   }
 }
