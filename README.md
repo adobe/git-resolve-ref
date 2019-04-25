@@ -23,10 +23,10 @@ Parameters:
 
 - `org`: GitHub organization or owner (e.g. `"adobe"`)
 - `repo`: GitHub repository name (e.g. `"helix-cli"`)
-- `branch`: branch name (optional, default: `"master"`)
+- `ref`: branch name (optional, default: `"master"`)
 
 ```bash
-wsk action invoke git-resolve-ref --param org "adobe" --param repo "helix-cli" --param branch "issue654" --result
+wsk action invoke git-resolve-ref --param org "adobe" --param repo "helix-cli" --param ref "issue654" --result
 ```
 
 ## Development

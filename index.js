@@ -15,7 +15,7 @@
 
 const https = require('https');
 
-function main({ org, repo, branch = 'master' }) {
+function main({ org, repo, ref = 'master' }) {
   return new Promise((resolve, reject) => {
     if (!org || !repo) {
       reject('org and repo are mandatory parameters');
@@ -37,15 +37,15 @@ function main({ org, repo, branch = 'master' }) {
         rawData += chunk;
       });
       res.on('end', () => {
-        const fqBranch = branch.startsWith('refs/heads/') ? branch : `refs/heads/${branch}`;
+        const fqBranch = ref.startsWith('refs/heads/') ? ref : `refs/heads/${ref}`;
         const result = rawData.split('\n').filter((row) => {
           const parts = row.split(' ');
           return parts.length === 2 && parts[1] === fqBranch;
         }).map(row => row.split(' '));
         if (result.length) {
-          resolve({ hash: result[0][0], branch: result[0][1] });
+          resolve({ hash: result[0][0], ref: result[0][1] });
         } else {
-          reject('branch not found');
+          reject('ref not found');
         }
       });
     }).on('error', (e) => {
@@ -54,5 +54,5 @@ function main({ org, repo, branch = 'master' }) {
     });
   });
 }
-main({ org: 'adobe', repo: 'helix-cli' });
+
 exports.main = main;
