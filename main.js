@@ -41,9 +41,9 @@ function main({ org, repo, ref = 'master' }) {
         const result = rawData.split('\n').filter((row) => {
           const parts = row.split(' ');
           return parts.length === 2 && parts[1] === fqBranch;
-        }).map(row => row.split(' '));
+        }).map(row => row.substr(4).split(' ')); // skip leading pkt-len (4 bytes) (https://git-scm.com/docs/protocol-common#_pkt_line_format)
         if (result.length) {
-          resolve({ hash: result[0][0], ref: result[0][1] });
+          resolve({ sha: result[0][0], ref: result[0][1] });
         } else {
           reject('ref not found');
         }

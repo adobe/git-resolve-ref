@@ -17,8 +17,31 @@
 const assert = require('assert');
 const { main } = require('../main.js');
 
+const ORG = 'adobe';
+const REPO = 'helix-cli';
+const REF = 'master';
+
+/**
+ * Checks if the specified string is a valid SHA-1 value.
+ *
+ * @param {string} str
+ * @returns {boolean} `true` if `str` represents a valid SHA-1, otherwise `false`
+ */
+function isValidSha(str) {
+  if (typeof str === 'string' && str.length === 40) {
+    const res = str.match(/[0-9a-f]/g);
+    return res && res.length === 40;
+  }
+  return false;
+}
+
 describe('main tests', () => {
   it('main function is present', () => {
     assert(typeof main === 'function');
+  });
+
+  it('main function returns valid sha format', async () => {
+    const { sha } = await main({ org: ORG, repo: REPO, ref: REF });
+    assert(isValidSha(sha));
   });
 });
