@@ -9,7 +9,7 @@
 
 A Serverless Node.js action with zero dependencies.
 
-Resolves a git repository reference (branch or tag name) to the corresponding commit sha.
+Resolves a Git reference (branch or tag name) to the corresponding commit sha.
 
 > **Note:** Currently only resolving of branch names is supported.
 

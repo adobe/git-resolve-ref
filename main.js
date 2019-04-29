@@ -43,7 +43,7 @@ function main({ org, repo, ref = 'master' }) {
           return parts.length === 2 && parts[1] === fqBranch;
         }).map(row => row.substr(4).split(' ')); // skip leading pkt-len (4 bytes) (https://git-scm.com/docs/protocol-common#_pkt_line_format)
         if (result.length) {
-          resolve({ sha: result[0][0], ref: result[0][1] });
+          resolve({ sha: result[0][0], fq_ref: result[0][1] });
         } else {
           reject('ref not found');
         }
