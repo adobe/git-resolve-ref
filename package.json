@@ -1,7 +1,7 @@
 {
-  "name": "git-resolve-branch",
+  "name": "git-resolve-ref",
   "version": "1.0.0",
-  "description": "Resolves a branch name to the corresponding commit sha",
+  "description": "Resolves a Git reference to the corresponding commit sha",
   "main": "main.js",
   "scripts": {
     "test": "nyc mocha",

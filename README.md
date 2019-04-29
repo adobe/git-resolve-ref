@@ -5,11 +5,13 @@
 [![GitHub issues](https://img.shields.io/github/issues/adobe/git-resolve-branch.svg)](https://github.com/adobe/git-resolve-branch/issues)
 [![LGTM Code Quality Grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/adobe/git-resolve-branch.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/adobe/git-resolve-branch)
 
-# git-resolve-branch
+# git-resolve-ref
 
-A Serverless Node.js action with zero dependencies. 
+A Serverless Node.js action with zero dependencies.
 
-Resolves a git repository branch name to the corresponding commit sha.
+Resolves a git repository reference (branch or tag name) to the corresponding commit sha.
+
+> **Note:** Currently only resolving of branch names is supported.
 
 ## Deploy action
 
@@ -23,10 +25,19 @@ Parameters:
 
 - `org`: GitHub organization or owner (e.g. `"adobe"`)
 - `repo`: GitHub repository name (e.g. `"helix-cli"`)
-- `ref`: branch name (optional, default: `"master"`)
+- `ref`: branch or tag name (optional, default: `"master"`)
 
 ```bash
 wsk action invoke git-resolve-ref --param org "adobe" --param repo "helix-cli" --param ref "issue654" --result
+```
+
+Result:
+
+```json
+{
+  "sha": "d18922f3914571e39af2c803d3498ca398dd09e7",
+  "fq_ref": "refs/heads/issue654"
+}
 ```
 
 ## Development
