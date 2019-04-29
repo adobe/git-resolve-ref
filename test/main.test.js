@@ -15,6 +15,7 @@
 'use strict';
 
 const assert = require('assert');
+const rp = require('request-promise-native');
 const { main } = require('../main.js');
 
 const ORG = 'adobe';
@@ -43,5 +44,18 @@ describe('main tests', () => {
   it('main function returns valid sha format', async () => {
     const { sha } = await main({ org: ORG, repo: REPO, ref: REF });
     assert(isValidSha(sha));
+  });
+
+  it('main function returns correct sha', async () => {
+    const { sha } = await main({ org: ORG, repo: REPO, ref: REF });
+    const options = {
+      uri: `https://api.github.com/repos/${ORG}/${REPO}/branches/${REF}`,
+      headers: {
+        'User-Agent': 'Request-Promise',
+      },
+      json: true,
+    };
+    const { commit } = await rp(options);
+    assert(commit && commit.sha === sha);
   });
 });

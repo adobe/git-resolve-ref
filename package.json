@@ -27,6 +27,8 @@
     "eslint-plugin-react": "7.12.4",
     "mocha": "^6.1.4",
     "mocha-parallel-tests": "^2.1.0",
-    "nyc": "^14.0.0"
+    "nyc": "^14.0.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
   }
 }
