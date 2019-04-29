@@ -32,19 +32,29 @@ function main({ org, repo, ref = 'master' }) {
         return;
       }
       res.setEncoding('utf8');
-      let rawData = '';
+      // TODO: support tags
+      const fqBranch = ref.startsWith('refs/heads/') ? ref : `refs/heads/${ref}`;
+      let resolved = false;
+      let truncatedLine = '';
       res.on('data', (chunk) => {
-        rawData += chunk;
-      });
-      res.on('end', () => {
-        const fqBranch = ref.startsWith('refs/heads/') ? ref : `refs/heads/${ref}`;
-        const result = rawData.split('\n').filter((row) => {
+        if (resolved) {
+          return;
+        }
+        const data = truncatedLine + chunk;
+        const lines = data.split('\n');
+        // remember last (truncated) line; will be '' if chunk ends with '\n'
+        truncatedLine = lines.pop();
+        const result = lines.filter((row) => {
           const parts = row.split(' ');
           return parts.length === 2 && parts[1] === fqBranch;
         }).map(row => row.substr(4).split(' ')); // skip leading pkt-len (4 bytes) (https://git-scm.com/docs/protocol-common#_pkt_line_format)
         if (result.length) {
           resolve({ sha: result[0][0], fq_ref: result[0][1] });
-        } else {
+          resolved = true;
+        }
+      });
+      res.on('end', () => {
+        if (!resolved) {
           reject('ref not found');
         }
       });
