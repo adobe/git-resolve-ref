@@ -40,7 +40,7 @@ jobs:
 
     - run:
         name: Getting Code Coverage
-        command: npm run test-ci
+        command: npm run test
         environment:
           MOCHA_FILE: junit/test-results.xml
 
