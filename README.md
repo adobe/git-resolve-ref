@@ -1,9 +1,9 @@
 ## Status
-[![codecov](https://img.shields.io/codecov/c/github/adobe/git-resolve-branch.svg)](https://codecov.io/gh/adobe/git-resolve-branch)
-[![CircleCI](https://img.shields.io/circleci/project/github/adobe/git-resolve-branch.svg)](https://circleci.com/gh/adobe/git-resolve-branch)
-[![GitHub license](https://img.shields.io/github/license/adobe/git-resolve-branch.svg)](https://github.com/adobe/git-resolve-branch/blob/master/LICENSE.txt)
-[![GitHub issues](https://img.shields.io/github/issues/adobe/git-resolve-branch.svg)](https://github.com/adobe/git-resolve-branch/issues)
-[![LGTM Code Quality Grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/adobe/git-resolve-branch.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/adobe/git-resolve-branch)
+[![codecov](https://img.shields.io/codecov/c/github/adobe/git-resolve-ref.svg)](https://codecov.io/gh/adobe/git-resolve-ref)
+[![CircleCI](https://img.shields.io/circleci/project/github/adobe/git-resolve-ref.svg)](https://circleci.com/gh/adobe/git-resolve-ref)
+[![GitHub license](https://img.shields.io/github/license/adobe/git-resolve-ref.svg)](https://github.com/adobe/git-resolve-ref/blob/master/LICENSE.txt)
+[![GitHub issues](https://img.shields.io/github/issues/adobe/git-resolve-ref.svg)](https://github.com/adobe/git-resolve-ref/issues)
+[![LGTM Code Quality Grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/adobe/git-resolve-ref.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/adobe/git-resolve-ref)
 
 # git-resolve-ref
 
