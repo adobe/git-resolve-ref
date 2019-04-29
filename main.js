@@ -32,8 +32,15 @@ function main({ org, repo, ref = 'master' }) {
         return;
       }
       res.setEncoding('utf8');
-      // TODO: support tags
-      const fqBranch = ref.startsWith('refs/heads/') ? ref : `refs/heads/${ref}`;
+      const searchTerms = [];
+      if (ref.startsWith('refs/')) {
+        // full ref name (e.g. 'refs/tags/v0.1.2')
+        searchTerms.push(ref);
+      } else {
+        // short ref name, potentially ambiguous (e.g. 'master', 'v0.1.2')
+        searchTerms.push(`refs/heads/${ref}`);
+        searchTerms.push(`refs/tags/${ref}`);
+      }
       let resolved = false;
       let truncatedLine = '';
       res.on('data', (chunk) => {
@@ -46,10 +53,10 @@ function main({ org, repo, ref = 'master' }) {
         truncatedLine = lines.pop();
         const result = lines.filter((row) => {
           const parts = row.split(' ');
-          return parts.length === 2 && parts[1] === fqBranch;
+          return parts.length === 2 && searchTerms.includes(parts[1]);
         }).map(row => row.substr(4).split(' ')); // skip leading pkt-len (4 bytes) (https://git-scm.com/docs/protocol-common#_pkt_line_format)
         if (result.length) {
-          resolve({ sha: result[0][0], fq_ref: result[0][1] });
+          resolve({ sha: result[0][0], fqRef: result[0][1] });
           resolved = true;
         }
       });

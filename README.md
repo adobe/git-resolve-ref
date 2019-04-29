@@ -9,9 +9,7 @@
 
 A Serverless Node.js action with zero dependencies.
 
-Resolves a Git reference (branch or tag name) to the corresponding commit sha.
-
-> **Note:** Currently only resolving of branch names is supported.
+Resolves a Git reference (branch or tag) to the corresponding commit sha.
 
 ## Deploy action
 
@@ -25,7 +23,7 @@ Parameters:
 
 - `org`: GitHub organization or owner (e.g. `"adobe"`)
 - `repo`: GitHub repository name (e.g. `"helix-cli"`)
-- `ref`: branch or tag name (optional, default: `"master"`)
+- `ref`: branch or tag name, either short (e.g  `"v0.1.2"`) or full name (e.g.`"refs/tags/v0.1.2"`) (optional, default: `"master"`)
 
 ```bash
 wsk action invoke git-resolve-ref --param org "adobe" --param repo "helix-cli" --param ref "issue654" --result
@@ -36,7 +34,7 @@ Result:
 ```json
 {
   "sha": "d18922f3914571e39af2c803d3498ca398dd09e7",
-  "fq_ref": "refs/heads/issue654"
+  "fqRef": "refs/heads/issue654"
 }
 ```
 
