@@ -14,7 +14,7 @@ Resolves a Git reference (branch or tag) to the corresponding commit sha.
 ## Deploy action
 
 ```bash
-wsk action create git-resolve-ref main.js
+wsk action create git-resolve-ref main.js --web true
 ```
 
 ## Invoke action
