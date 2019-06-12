@@ -7,7 +7,7 @@
 
 # git-resolve-ref
 
-A Serverless Node.js action with zero dependencies.
+A Serverless Node.js Web action with zero dependencies.
 
 Resolves a Git reference (branch or tag) to the corresponding commit sha.
 
