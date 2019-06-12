@@ -18,7 +18,7 @@ const https = require('https');
 function main({ org, repo, ref = 'master' }) {
   return new Promise((resolve, reject) => {
     if (!org || !repo) {
-      reject({
+      resolve({
         statusCode: 400,
         body: 'org and repo are mandatory parameters',
       });
@@ -26,12 +26,15 @@ function main({ org, repo, ref = 'master' }) {
     }
 
     https.get(`https://github.com/${org}/${repo}.git/info/refs?service=git-upload-pack`, (res) => {
-      const { statusCode } = res;
+      const { statusCode, statusMessage } = res;
 
       if (statusCode !== 200) {
         // consume response data to free up memory
         res.resume();
-        reject(`failed to fetch git repo info (statusCode: ${statusCode})`);
+        resolve({
+          statusCode,
+          body: `failed to fetch git repo info (statusCode: ${statusCode}, statusMessage: ${statusMessage})`,
+        });
         return;
       }
       res.setEncoding('utf8');
@@ -72,7 +75,7 @@ function main({ org, repo, ref = 'master' }) {
       });
       res.on('end', () => {
         if (!resolved) {
-          reject({
+          resolve({
             statusCode: 404,
             body: 'ref not found',
           });
