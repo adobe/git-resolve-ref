@@ -18,17 +18,23 @@ const https = require('https');
 function main({ org, repo, ref = 'master' }) {
   return new Promise((resolve, reject) => {
     if (!org || !repo) {
-      reject('org and repo are mandatory parameters');
+      resolve({
+        statusCode: 400,
+        body: 'org and repo are mandatory parameters',
+      });
       return;
     }
 
     https.get(`https://github.com/${org}/${repo}.git/info/refs?service=git-upload-pack`, (res) => {
-      const { statusCode } = res;
+      const { statusCode, statusMessage } = res;
 
       if (statusCode !== 200) {
         // consume response data to free up memory
         res.resume();
-        reject(`failed to fetch git repo info (statusCode: ${statusCode})`);
+        resolve({
+          statusCode,
+          body: `failed to fetch git repo info (statusCode: ${statusCode}, statusMessage: ${statusMessage})`,
+        });
         return;
       }
       res.setEncoding('utf8');
@@ -56,18 +62,28 @@ function main({ org, repo, ref = 'master' }) {
           return parts.length === 2 && searchTerms.includes(parts[1]);
         }).map(row => row.substr(4).split(' ')); // skip leading pkt-len (4 bytes) (https://git-scm.com/docs/protocol-common#_pkt_line_format)
         if (result.length) {
-          resolve({ sha: result[0][0], fqRef: result[0][1] });
+          resolve({
+            statusCode: 200,
+            headers: { 'Content-Type': 'application/json' },
+            body: {
+              sha: result[0][0],
+              fqRef: result[0][1],
+            },
+          });
           resolved = true;
         }
       });
       res.on('end', () => {
         if (!resolved) {
-          reject('ref not found');
+          resolve({
+            statusCode: 404,
+            body: 'ref not found',
+          });
         }
       });
     }).on('error', (e) => {
       console.error(e);
-      reject(e.toString());
+      reject(e);
     });
   });
 }

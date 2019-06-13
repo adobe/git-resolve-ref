@@ -42,39 +42,43 @@ describe('main tests', () => {
     assert(typeof main === 'function');
   });
 
-  it('org param is manadatory', async () => {
-    assert.rejects(main({ repo: REPO, ref: SHORT_REF }));
+  it('main function returns 404 for missing org param', async () => {
+    const { statusCode } = await main({ repo: REPO, ref: SHORT_REF });
+    assert.equal(statusCode, 400);
   });
 
-  it('repo param is manadatory', async () => {
-    assert.rejects(main({ org: ORG, ref: SHORT_REF }));
+  it('main function returns 404 for missing repo param', async () => {
+    const { statusCode } = await main({ org: ORG, ref: SHORT_REF });
+    assert.equal(statusCode, 400);
   });
 
   it('ref param is optional with default: master', async () => {
-    const { fqRef } = await main({ org: ORG, repo: REPO });
+    const { statusCode, body: { fqRef } } = await main({ org: ORG, repo: REPO });
+    assert.equal(statusCode, 200);
     assert.equal(fqRef, 'refs/heads/master');
   });
 
   it('main function returns valid sha format', async () => {
-    const { sha } = await main({ org: ORG, repo: REPO, ref: SHORT_REF });
+    const { statusCode, body: { sha } } = await main({ org: ORG, repo: REPO, ref: SHORT_REF });
+    assert.equal(statusCode, 200);
     assert(isValidSha(sha));
   });
 
   it('main function support short and full ref names', async () => {
-    const { sha: sha1 } = await main({ org: ORG, repo: REPO, ref: SHORT_REF });
-    const { sha: sha2 } = await main({ org: ORG, repo: REPO, ref: FULL_REF });
+    const { body: { sha: sha1 } } = await main({ org: ORG, repo: REPO, ref: SHORT_REF });
+    const { body: { sha: sha2 } } = await main({ org: ORG, repo: REPO, ref: FULL_REF });
     assert.equal(sha1, sha2);
   });
 
   it('main function resolves tag', async () => {
-    const { sha: sha1, fqRef } = await main({ org: ORG, repo: REPO, ref: 'v1.0.0' });
+    const { body: { sha: sha1, fqRef } } = await main({ org: ORG, repo: REPO, ref: 'v1.0.0' });
     assert.equal(fqRef, 'refs/tags/v1.0.0');
-    const { sha: sha2 } = await main({ org: ORG, repo: REPO, ref: 'refs/tags/v1.0.0' });
+    const { body: { sha: sha2 } } = await main({ org: ORG, repo: REPO, ref: 'refs/tags/v1.0.0' });
     assert.equal(sha1, sha2);
   });
 
   it('main function returns correct sha', async () => {
-    const { sha } = await main({ org: ORG, repo: REPO, ref: SHORT_REF });
+    const { body: { sha } } = await main({ org: ORG, repo: REPO, ref: SHORT_REF });
     const options = {
       uri: `https://api.github.com/repos/${ORG}/${REPO}/branches/${SHORT_REF}`,
       headers: {
@@ -86,7 +90,13 @@ describe('main tests', () => {
     assert(commit && commit.sha === sha);
   });
 
-  it('main function fails for non-existent ref', async () => {
-    assert.rejects(main({ org: ORG, repo: REPO, ref: 'unknown' }));
+  it('main function returns 404 for non-existing ref', async () => {
+    const { statusCode } = await main({ org: ORG, repo: REPO, ref: 'unknown' });
+    assert.equal(statusCode, 404);
+  });
+
+  it('main function fails for non-existing repo', async () => {
+    const { statusCode } = await main({ org: ORG, repo: 'unknown', ref: SHORT_REF });
+    assert([401, 404].includes(statusCode));
   });
 });
