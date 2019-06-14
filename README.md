@@ -26,15 +26,15 @@ Parameters:
 - `ref`: branch or tag name, either short (e.g  `"v0.1.2"`) or full name (e.g.`"refs/tags/v0.1.2"`) (optional, default: `"master"`)
 
 ```bash
-wsk action invoke git-resolve-ref --param org "adobe" --param repo "helix-cli" --param ref "issue654" --result
+wsk action invoke git-resolve-ref --param org "adobe" --param repo "helix-cli" --param ref "master" --result
 ```
 
 Result:
 
 ```json
 {
-  "sha": "d18922f3914571e39af2c803d3498ca398dd09e7",
-  "fqRef": "refs/heads/issue654"
+  "sha": "5222277edc96fe1cf6adc8f117f747ab62f28cd1",
+  "fqRef": "refs/heads/master"
 }
 ```
 
